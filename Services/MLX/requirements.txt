@@ -1,0 +1,15 @@
+fastapi
+uvicorn
+einops
+einx
+jieba
+huggingface_hub
+mlx
+numpy
+pypinyin
+setuptools
+sounddevice
+soundfile
+tqdm
+vocos-mlx
+f5-tts-mlx

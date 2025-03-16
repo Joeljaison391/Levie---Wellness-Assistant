@@ -1,0 +1,163 @@
+{
+  "personas": [
+    {
+      "personalInfo": {
+        "username": "robert78",
+        "firstName": "Robert",
+        "middleName": "James",
+        "lastName": "Thompson",
+        "placeOfBirth": "Chicago",
+        "dateOfBirth": "1946-03-25",
+        "age": 78,
+        "gender": "Male"
+      },
+      "education": [
+        {
+          "institutionName": "Harvard University",
+          "level": "Doctorate",
+          "fieldOfStudy": "Mechanical Engineering",
+          "degree": "Ph.D.",
+          "startDate": "1968-09-01",
+          "endDate": "1974-06-15"
+        }
+      ],
+      "maritalStatus": "Widowed",
+      "spouse": {
+        "name": "Linda Thompson",
+        "marriageDate": "1975-06-20",
+        "placeOfMarriage": "Chicago",
+        "education": "Master's in Education",
+        "occupation": "School Principal",
+        "isAlive": false,
+        "dateOfPassing": "2015-04-10"
+      },
+      "children": [
+        {
+          "name": "David Thompson",
+          "relationship": "Son",
+          "dateOfBirth": "1980-05-12",
+          "placeOfBirth": "Boston",
+          "education": "MSc in Data Science",
+          "occupation": "AI Researcher",
+          "isAlive": true,
+          "dateOfPassing": ""
+        }
+      ],
+      "friends": [
+        {
+          "name": "Michael Adams",
+          "relationship": "Best Friend",
+          "dateOfBirth": "1945-12-10",
+          "education": "BSc in Physics",
+          "occupation": "Retired Scientist",
+          "isAlive": true,
+          "dateOfPassing": ""
+        }
+      ],
+      "currentResidence": {
+        "currentLocation": "Boston",
+        "moveInDate": "2018-09-01",
+        "arrangement": "Own House"
+      },
+      "medicalHistory": [
+        {
+          "medicalProblems": "Arthritis",
+          "disabilities": "None",
+          "diagnosisDate": "2010-11-10",
+          "currentMedications": "Ibuprofen"
+        }
+      ],
+      "caretaker": {
+        "fullName": "Sarah Williams",
+        "address": "42 Greenway, Boston",
+        "location": "Boston",
+        "relation": "Caregiver",
+        "careStartDate": "2020-06-15"
+      },
+      "importantLifeEvents": [
+        {
+          "eventName": "Marriage",
+          "date": "1975-06-20",
+          "location": "Chicago",
+          "description": "Married the love of my life, Linda."
+        }
+      ],
+      "memorableMoments": [
+        {
+          "moment": "Won Engineering Award",
+          "date": "1998-05-10",
+          "location": "Boston",
+          "description": "Recognized for contributions to mechanical engineering."
+        }
+      ]
+    },
+    {
+      "personalInfo": {
+        "username": "margaret82",
+        "firstName": "Margaret",
+        "middleName": "Anne",
+        "lastName": "Williams",
+        "placeOfBirth": "Los Angeles",
+        "dateOfBirth": "1942-07-14",
+        "age": 82,
+        "gender": "Female"
+      },
+      "education": [
+        {
+          "institutionName": "UCLA",
+          "level": "Bachelor's",
+          "fieldOfStudy": "Fine Arts",
+          "degree": "BA",
+          "startDate": "1960-09-01",
+          "endDate": "1964-06-15"
+        }
+      ],
+      "maritalStatus": "Married",
+      "spouse": {
+        "name": "Edward Williams",
+        "marriageDate": "1968-04-25",
+        "placeOfMarriage": "Los Angeles",
+        "education": "MBA",
+        "occupation": "Business Consultant",
+        "isAlive": false,
+        "dateOfPassing": "2020-02-18"
+      },
+      "children": [
+        {
+          "name": "Sophia Williams",
+          "relationship": "Daughter",
+          "dateOfBirth": "1975-11-03",
+          "placeOfBirth": "San Francisco",
+          "education": "MFA in Creative Writing",
+          "occupation": "Author",
+          "isAlive": true,
+          "dateOfPassing": ""
+        }
+      ],
+      "friends": [
+        {
+          "name": "Helen Foster",
+          "relationship": "Longtime Friend",
+          "dateOfBirth": "1943-03-28",
+          "education": "BA in Literature",
+          "occupation": "Librarian",
+          "isAlive": true,
+          "dateOfPassing": ""
+        }
+      ],
+      "currentResidence": {
+        "currentLocation": "San Francisco",
+        "moveInDate": "2015-07-10",
+        "arrangement": "Elderly Care Facility"
+      },
+      "medicalHistory": [
+        {
+          "medicalProblems": "Alzheimer’s Stage 2",
+          "disabilities": "Hearing Impairment",
+          "diagnosisDate": "2016-09-20",
+          "currentMedications": "Donepezil"
+        }
+      ]
+    }
+  ]
+}
