@@ -76,10 +76,10 @@ async def get_story():
         raise HTTPException(status_code=500, detail=f"Unexpected error: {exc}")
 
 
-@app.get("/chat")
+@app.post("/chat")
 async def get_chat(
-        latest_msg: str = Form(...),  # The most recent message
-        prev_msgs: list = Form(...),  # A list of previous messages for context
+    latest_msg: str = Form(...),  # The most recent message
+    prev_msgs: list = Form(...),  # A list of previous messages for context
 ):
     try:
         logger.debug(f"Latest message received: {latest_msg}")
@@ -115,6 +115,7 @@ async def get_chat(
     except Exception as exc:
         logger.error(f"Unexpected error occurred: {exc}")
         raise HTTPException(status_code=500, detail=f"Unexpected error: {exc}")
+
 
 @app.post("/voice")
 async def get_voice(
