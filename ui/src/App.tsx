@@ -3,6 +3,7 @@ import WelcomePage from "./pages/WelcomePage";
 import PersonaSelection from "./pages/ProfileSelectionPage";
 import "./App.css";
 import VoiceAssistant from "@/pages/VoiceAssistantPage.tsx";
+import StoriesDashboardPage from "@/pages/StoriesDashboardPage.tsx";
 
 function App() {
     return (
@@ -11,6 +12,7 @@ function App() {
                 <Route path="/" element={<WelcomePage />} />
                 <Route path="/profile" element={<PersonaSelection/>} />
                 <Route path="/ai" element={<VoiceAssistant/>}/>
+                <Route path="/memories" element={<StoriesDashboardPage/>} />
             </Routes>
         </Router>
     );
