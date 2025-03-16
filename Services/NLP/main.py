@@ -1,4 +1,5 @@
 from fastapi import FastAPI, HTTPException, Depends
+from fastapi.middleware.cors import CORSMiddleware
 import spacy
 import stanza
 import networkx as nx
@@ -23,7 +24,6 @@ engine = create_engine(DATABASE_URL)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 Base = declarative_base()
 
-
 # Updated database model for storing annotated diary entries (stories)
 class Story(Base):
     __tablename__ = "stories"
@@ -34,12 +34,10 @@ class Story(Base):
     annotations = Column(JSON)
     ai_enhanced_annotations = Column(JSON)
 
-
-# For development only: Drop and recreate tables to update the schema.
-print("DEBUG: Dropping existing tables (development only) and recreating them")
-Base.metadata.drop_all(bind=engine)
-Base.metadata.create_all(bind=engine)
-
+# For development only: Uncomment to drop and recreate tables if schema changes.
+# print("DEBUG: Dropping existing tables (development only) and recreating them")
+# Base.metadata.drop_all(bind=engine)
+# Base.metadata.create_all(bind=engine)
 
 # Dependency to get a DB session
 def get_db():
@@ -51,11 +49,19 @@ def get_db():
         db.close()
         print("DEBUG: DB session closed")
 
-
 # ----------------------------
 # Initialize FastAPI
 # ----------------------------
 app = FastAPI(title="Diary Annotation API", version="1.1")
+
+origins = [f"http://localhost:{port}" for port in range(5000, 8501)]
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 print("DEBUG: FastAPI app initialized")
 
 # ----------------------------
@@ -100,7 +106,6 @@ relation_words = {
     "wife": ["patni", "manaivi", "bharya"]
 }
 
-
 # ----------------------------
 # Helper Functions for Relationship Extraction
 # ----------------------------
@@ -111,14 +116,12 @@ def canonical_kinship(term, relation_words):
             return canonical
     return term
 
-
 def build_kinship_regex():
     print("DEBUG: Building kinship regex")
     patterns = [r"my\s+(?:" + "|".join(synonyms) + r")" for synonyms in relation_words.values()]
     regex = re.compile("(" + "|".join(patterns) + ")", re.IGNORECASE)
     print("DEBUG: Kinship regex compiled:", regex.pattern)
     return regex, relation_words
-
 
 def build_relationship_graph(personal_data):
     print("DEBUG: Building relationship graph")
@@ -157,7 +160,6 @@ def build_relationship_graph(personal_data):
     print("DEBUG: Relationship graph built with nodes:", list(G.nodes))
     return G
 
-
 def find_relationship(G, main_user, target_name):
     target_name = target_name.lower()
     main_user = main_user.lower()
@@ -178,7 +180,6 @@ def find_relationship(G, main_user, target_name):
         print("DEBUG: No path found between nodes")
         return "Unknown"
 
-
 # ----------------------------
 # NLP Extraction Functions
 # ----------------------------
@@ -188,11 +189,9 @@ def extract_entities(text):
     persons = [ent.text for ent in doc.ents if ent.label_ == "PERSON"]
     print("DEBUG: Persons extracted:", persons)
     stanza_doc = nlp_stanza(text)
-    locations = [ent.text for sentence in stanza_doc.sentences for ent in sentence.ents if
-                 ent.type in ["GPE", "LOCATION"]]
+    locations = [ent.text for sentence in stanza_doc.sentences for ent in sentence.ents if ent.type in ["GPE", "LOCATION"]]
     print("DEBUG: Locations extracted:", locations)
     return {"persons": persons, "locations": locations}
-
 
 def resolve_coreferences(text):
     print("DEBUG: Resolving coreferences in text")
@@ -207,7 +206,6 @@ def resolve_coreferences(text):
     print("DEBUG: Coreferences resolved. Resulting text:", text)
     return text
 
-
 # ----------------------------
 # Helper to Extract Writer's Signature
 # ----------------------------
@@ -217,7 +215,6 @@ def extract_writer_name(diary_entry: str) -> str:
         if line.strip():
             return line.strip()
     return ""
-
 
 # ----------------------------
 # Diary Annotation Pipeline
@@ -267,7 +264,6 @@ def annotate_diary(diary_entry, personal_data):
     print("DEBUG: Diary annotation completed:", json.dumps(annotation_result, indent=2))
     return annotation_result
 
-
 # ----------------------------
 # AI Model Processing with Structured JSON Output
 # ----------------------------
@@ -304,7 +300,6 @@ def process_with_ai(diary_entry, nlp_annotations):
     print("DEBUG: Raw AI response received:", json.dumps(response_data, indent=2))
     return response_data
 
-
 def parse_structured_ai_output(ai_response):
     print("DEBUG: Parsing structured AI output")
     try:
@@ -323,7 +318,6 @@ def parse_structured_ai_output(ai_response):
         print("DEBUG: Failed to parse AI output as JSON:", e)
         raise Exception(f"Failed to parse AI output as JSON: {e}")
 
-
 # ----------------------------
 # FastAPI Endpoints
 # ----------------------------
@@ -333,7 +327,6 @@ async def get_memory_count(db: Session = Depends(get_db)):
     count = db.query(Story).count()
     return {"count": count}
 
-
 @app.get("/memory/{memory_id}")
 async def get_memory(memory_id: int, db: Session = Depends(get_db)):
     print("DEBUG: Fetching memory with ID:", memory_id)
@@ -342,6 +335,12 @@ async def get_memory(memory_id: int, db: Session = Depends(get_db)):
         raise HTTPException(status_code=404, detail="Memory not found")
     return memory
 
+# New route: Fetch all stories
+@app.get("/stories/")
+async def get_all_stories(db: Session = Depends(get_db)):
+    print("DEBUG: Fetching all stories")
+    stories = db.query(Story).all()
+    return stories
 
 @app.post("/annotate/")
 async def annotate_diary_entry(data: Dict[str, Any], db: Session = Depends(get_db)):
@@ -416,6 +415,5 @@ async def annotate_diary_entry(data: Dict[str, Any], db: Session = Depends(get_d
 # ----------------------------
 if __name__ == "__main__":
     import uvicorn
-
     print("DEBUG: Starting FastAPI server on host 0.0.0.0 and port 6060")
     uvicorn.run(app, host="0.0.0.0", port=6060)

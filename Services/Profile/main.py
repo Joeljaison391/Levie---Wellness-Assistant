@@ -1,4 +1,5 @@
 from fastapi import FastAPI, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from typing import List
 import psycopg2
@@ -9,6 +10,16 @@ import uvicorn
 
 # FastAPI app setup
 app = FastAPI()
+
+origins = [f"http://localhost:{port}" for port in range(5000, 8501)]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 # Database connection setup
 DATABASE_URL = "postgresql://admin:root@localhost/main"
